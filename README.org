@@ -5,34 +5,37 @@ Written by Martin Kennedy - Feb 2018 - revised May 2018
 Setup:
 
 1) Shell into the router and run some commands.
+   
+   #+BEGIN_SRC sh
+   opkg update
+   opkg install git
+   git clone https://github.com/hurricos/autoftpd autoftpd
+   #+END_SRC
 
-#+BEGIN_SRC sh
-opkg update
-opkg install git
-git clone https://github.com/hurricos/autoftpd autoftpd
-#+END_SRC
+   /Note: Alternatively, if you don't want =git= on your system (as of June 2018, it's 700KB), you can move it manually to =~/autoftpd/=./
 
-/Note: Alternatively, if you don't want =git= on your system (as of June 2018, it's 700KB), you can move it manually to =~/autoftpd/=./
+2) Configure =autoftp.defaults.conf=. In particular:
+   1) Ensure the =FTP_HOST_NR= is correct; this is the host number in the subnet at which the FTP server is to be located.
+   2) Remember to create and set a file to store the files that get automatically pulled down. This is, by default, =/mnt/sda1/files=, so run =ls /mnt= to find the automatic mount point, then =mkdir /mnt/<MOUNT_POINT>/files/=, and change =FS_DIR= in =autoftp.defaults.conf= to =/mnt/<MOUNT_POINT>=.
+   
+3) Install by running
 
-Then, run
+   #+BEGIN_SRC sh
+   cd autoftpd && ./install.sh
+   #+END_SRC
 
-#+BEGIN_SRC sh
-cd autoftpd && ./install.sh
-#+END_SRC
+4) Insert USB flash drive with compatable, mountable filesystem (EXT2/3/4, FAT, NTFS all work.)
 
-2) Ensure router automatically connects to SSID of desired routers - passwords do not need to be the same, but it makes things easier to configure.
-3) Insert USB flash drive with compatable, mountable filesystem (EXT2/3/4, FAT, NTFS all work.)
-4) Ensure router can run reliably on power supply granted; 5V @ 0.5A seems OK.
-5) Configure /etc/autoftp/autoftp.defaults.conf.
-   1) In particular, ensure the =FTP_HOST_NR= is correct; this is the host number in the subnet at which the FTP server is to be located.
-   2) Also remember to create and set a file to store the files that get automatically pulled down. This is, by default, /mnt/sda1/files.
-6) If any of the FTP servers require authentication, modify /etc/autoftp/autoftp.defaults.conf to =ncftp[get|put] -f /login/file.cfg=; see https://www.ncftp.com/ncftp/doc/ncftpget.html.
+5) By default, =autoftpd= expects that the sink (push) FTP server requires authentication, but not the source (pull) FTP server(s). This is reflected in =autoftp.defaults.conf=. Before attempting to use =autoftpd=, please create a file that looks like [[sample_login.cfg]], fill in the required credentials and place it either at the default location (=/etc/autoftp/login.cfg=), or wherever you like (making sure to set =PUSH_LOGIN_FILE= to match). If you want to add login requirements to the source FTP servers, set =PULL_REQ_AUTH= to =TRUE=, and provide a location for a login file.
+
+6) Ensure router automatically connects to SSID of desired routers - passwords do not need to be the same, but it makes things easier to configure. This can / should all be done through LuCI.
 
 Notes:
-1) There may be some issues with the pull mechanism; notably, if files change during the pull, NcFTP will behave in an undefined manner.
-2) It is vastly preferable that all files be given unique names, OR be continuously concatenable - that is to say, if a file is downloaded and removed at any point, its replacement can be directly concatenated to the end of that file to express a larger file which would have existed if the original file had not been removed. Most data formats can handle this.
-3) The files on different local networks don't need to be unique.
-4) Non-UNIX based FTP servers will not work to pull from, unfortunately. To push to, a DOS-based FTP server is (probably) fine, but I've yet to test. (The only possible stop might be the ASCII mode, as UNIX and DOS pick different line terminators - but I believe NcFTP handles this natively.)
+1) LEDs are DISABLED BY DEFAULT, since the target appliance is not necessarily known. You can certainly browse [[https://openwrt.org/docs/guide-user/base-system/led_configuration][OpenWRT.org's LED configuration guide]], install the required kernel modules through =opkg= and override =led_mode ()= in =autoftp.defaults.conf=, but as of yet no effort has been made to implement hardware checking / adaptation, since I only have the gl-AR300M.
+2) The files on different local networks don't need to be unique, since they are saved under a directory named after the source LAN IP of the FTP server.
+3) To avoid overwriting files after connecting twice to the same FTP source (something that would happen if the wireless connection broke and was re-established), a flag is set each time a DHCP address is assigned; all flags are deleted when files are flushed at the FTP sink. That said, from a design standpoint, it may be preferable that the files be configured to be continuously concatenable - that is to say, if a file is downloaded and removed at any point from an FTP source, its replacement can be directly concatenated to the end of that file to express a valid larger file correctly containing the data of both. Most data formats can handle this, but as we are not assuming formats, this isn't currently implemented.
+4) Non-UNIX based FTP servers may not work to pull from, unfortunately. To push to, a DOS-based FTP server is (probably) fine, but I've yet to test. (The problem is when using ASCII mode, as UNIX and DOS pick different line terminators; this problem is peculiar to NcFTP, so a different FTP manager would work.)
+5) Please make sure the router can run reliably on power supply granted; 5V @ 0.5A seems OK for the gl-AR300M.
 
 * TODO Build installation package
 SCHEDULED: <2018-06-01 Fri 14:00>--<2018-06-01 Fri 17:00>
@@ -47,7 +50,7 @@ SCHEDULED: <2018-06-01 Fri 14:00>--<2018-06-01 Fri 17:00>
 
 - [X] Setup laptop vsftpd to accept anonymous configuration
 
-- [ ] Setup pi vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
+- [X] Setup pi vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
 
 - [X] Test out both vsftpd's from command-line NcFTP
 
@@ -59,7 +62,7 @@ SCHEDULED: <2018-06-01 Fri 14:00>--<2018-06-01 Fri 17:00>
 
 - [X] Add default installs to scripts
 
-- [ ] Add source files to script
+- [X] Add source files to script
 
 - [ ] Change IP addresses required to those mangled
 
@@ -71,7 +74,7 @@ SCHEDULED: <2018-06-01 Fri 14:00>--<2018-06-01 Fri 17:00>
 
 - [ ] Connect and verify association of glAR
 
-- [ ] dump block, then attempt to move it by cutting power to Linksys
+- [ ] Grab the FTP files, then attempt to move it by cutting power to Linksys
 
 ** TODO Finalize
 
