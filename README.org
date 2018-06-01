@@ -19,47 +19,47 @@ Notes:
 * TODO Build installation package
 SCHEDULED: <2018-05-31 Thu 21:15>
 
-** DONE Reset router to defaults
+- [X] Reset router to defaluts 
 
-** TODO Setup github repository for autoftp
+- [ ] Setup github repository for autoftp
 
 ** TODO Setup test environment
 
-*** DONE Install vsFTPd on laptop
+- [X] Install vsFTPd on laptop
 
-*** TODO Setup laptop vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
+- [ ] Setup laptop vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
 
-*** TODO Setup pi vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
+- [ ] Setup pi vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
 
-*** TODO Test out both vsftpd's from command-line ncFTP
+- [ ] Test out both vsftpd's from command-line ncFTP
 
-*** TODO Connect laptop to Linksys
+- [ ] Connect laptop to Linksys
 
-*** TODO Setup Linksys with identical pass / BSSID, but with particular subnets satisfying req's.
+- [ ] Setup Linksys with identical pass / BSSID, but with particular subnets satisfying req's.
 
 ** TODO Create installation script
 
-*** TODO Add default installs to scripts [[*Reset router to defaults][(>)]]
+- [ ] Add default installs to scripts
 
-*** TODO Add source files to script [[*Setup github repository for autoftp][(>)]]
+- [ ] Add source files to script
 
-*** TODO Change IP addresses required to those mangled [[*Setup Linksys with identical pass / BSSID, but with particular subnets satisfying req's.][(>)]]
+- [ ] Change IP addresses required to those mangled
 
 ** TODO Test configuration script
 
-*** TODO Connect laptop to Linksys in corner
+- [ ] Connect laptop to Linksys in corner
 
-*** TODO Connect Pi to base station
+- [ ] Connect Pi to base station
 
-*** TODO Connect and verify association of glAR
+- [ ] Connect and verify association of glAR
 
-*** TODO dump block, then attempt to move it by cutting power to Linksys
+- [ ] dump block, then attempt to move it by cutting power to Linksys
 
 ** TODO Finalize
 
-*** TODO Change script to accept regexes for the assigned IP, and a sed script to transform them [[*Setup Linksys with identical pass / BSSID, but with particular subnets satisfying][(>)]] [[*Add source files to script %5B%5B*Setup github repository for autoftp%5D%5B(>)%5D%5D][(>)]]
+- [ ] Change script to accept regexes for the assigned IP, and a sed script to transform them
 
-*** TODO Simplify LED blinking
+- [ ] Simplify LED blinking
 
-*** TODO Reset glAR and test
+- [ ] Reset glAR and test
 
