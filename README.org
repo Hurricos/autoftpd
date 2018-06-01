@@ -17,17 +17,17 @@ Notes:
 4) Non-UNIX based FTP servers will not work to pull from, unfortunately. To push to, a DOS-based FTP server is (probably) fine, but I've yet to test. (The only possible stop might be the ASCII mode, as UNIX and DOS pick different line terminators - but I believe NcFTP handles this natively.)
 
 * TODO Build installation package
-SCHEDULED: <2018-05-31 Thu 21:15>
+SCHEDULED: <2018-06-01 Fri 14:00>--<2018-06-01 Fri 17:00>
 
 - [X] Reset router to defaluts 
 
-- [ ] Setup github repository for autoftp
+- [X] Setup github repository for autoftp
 
 ** TODO Setup test environment
 
 - [X] Install vsFTPd on laptop
 
-- [ ] Setup laptop vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
+- [ ] Setup laptop vsftpd to accept anonymous configuration
 
 - [ ] Setup pi vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
 
@@ -56,6 +56,8 @@ SCHEDULED: <2018-05-31 Thu 21:15>
 - [ ] dump block, then attempt to move it by cutting power to Linksys
 
 ** TODO Finalize
+
+- [ ] Setup laptop to take configuration from [[file:autoftp/login.cfg][login.cfg]]
 
 - [ ] Change script to accept regexes for the assigned IP, and a sed script to transform them
 
