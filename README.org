@@ -1,0 +1,65 @@
+* autoftp - automated WLAN file aggregator using NcFTP
+Written by Martin Kennedy - Feb 2018 - revised May 2018
+
+Setup:
+1) Ensure router automatically connects to SSID of desired routers - passwords do not need to be the same, but it makes things easier to configure.
+2) Insert USB flash drive with compatable, mountable filesystem (EXT2/3/4, FAT, NTFS all work.)
+3) Ensure router can run reliably on power supply granted; 5V @ 0.5A seems OK.
+4) Configure /etc/autoftp/autoftp.defaults.conf.
+   1) In particular, ensure the FTP_HOST_NR is correct; this is the host number in the subnet at which the FTP server is to be located.
+   2) Also remember to create and set a file to store the files that get automatically pulled down. This is, by default, /mnt/sda1/files.
+5) If any of the FTP servers require authentication, modify /etc/autoftp/autoftp.defaults.conf to =ncftp[get|put] -f /login/file.cfg=; see https://www.ncftp.com/ncftp/doc/ncftpget.html.
+
+Notes:
+1) There may be some issues with the pull mechanism; notably, if files change during the pull, NcFTP will behave in an undefined manner.
+2) It is vastly preferable that all files be given unique names, OR be continuously concatenable - that is to say, if a file is downloaded and removed at any point, its replacement can be directly concatenated to the end of that file to express a larger file which would have existed if the original file had not been removed. Most data formats can handle this.
+3) The files on different local networks don't need to be unique.
+4) Non-UNIX based FTP servers will not work to pull from, unfortunately. To push to, a DOS-based FTP server is (probably) fine, but I've yet to test. (The only possible stop might be the ASCII mode, as UNIX and DOS pick different line terminators - but I believe NcFTP handles this natively.)
+
+* TODO Build installation package
+SCHEDULED: <2018-05-31 Thu 21:15>
+
+** DONE Reset router to defaults
+
+** TODO Setup github repository for autoftp
+
+** TODO Setup test environment
+
+*** DONE Install vsFTPd on laptop
+
+*** TODO Setup laptop vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
+
+*** TODO Setup pi vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
+
+*** TODO Test out both vsftpd's from command-line ncFTP
+
+*** TODO Connect laptop to Linksys
+
+*** TODO Setup Linksys with identical pass / BSSID, but with particular subnets satisfying req's.
+
+** TODO Create installation script
+
+*** TODO Add default installs to scripts [[*Reset router to defaults][(>)]]
+
+*** TODO Add source files to script [[*Setup github repository for autoftp][(>)]]
+
+*** TODO Change IP addresses required to those mangled [[*Setup Linksys with identical pass / BSSID, but with particular subnets satisfying req's.][(>)]]
+
+** TODO Test configuration script
+
+*** TODO Connect laptop to Linksys in corner
+
+*** TODO Connect Pi to base station
+
+*** TODO Connect and verify association of glAR
+
+*** TODO dump block, then attempt to move it by cutting power to Linksys
+
+** TODO Finalize
+
+*** TODO Change script to accept regexes for the assigned IP, and a sed script to transform them [[*Setup Linksys with identical pass / BSSID, but with particular subnets satisfying][(>)]] [[*Add source files to script %5B%5B*Setup github repository for autoftp%5D%5B(>)%5D%5D][(>)]]
+
+*** TODO Simplify LED blinking
+
+*** TODO Reset glAR and test
+
