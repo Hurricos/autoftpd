@@ -1,0 +1,73 @@
+#!/bin/sh
+# autoftp: automated WLAN file aggregator using NcFTP
+# Written by Martin Kennedy
+
+source /etc/autoftp/autoftp.defaults.conf
+
+# Uncomment this line to load autoftp.conf overtop the autoftp.defaults.conf
+#source /etc/autoftp/autoftp.conf
+
+handle_newnet () {
+	WLAN_IP=$(get_wlan_ip)
+	if [ -z "$WLAN_IP" ]
+	then
+		return 1;
+	fi
+	FTP_IP=$(get_ftp_ip $WLAN_IP)
+	log_write "Received WLAN IP: $WLAN_IP"
+	if ! grep -xq "$FTP_IP" "$TOUCH_FILE"
+	then
+		log_write "  FTP IP: $FTP_IP"
+		SUBNET=$(get_subnet "$FTP_IP")
+		if [ "$SUBNET" != "0" ]
+		then
+			mkdir -p "$STORE_DIR/$FTP_IP"
+			log_write "  Executing FTP pull from $FTP_IP ..."
+			handle_ftp_pull $FTP_IP
+			FTP_RETURN=$?
+			if [ "$FTP_RETURN" == "0" ]
+			then
+				log_write "  FTP pull from $FTP_IP succeeded."
+				do_touchdown $FTP_IP
+				return 0;
+			else
+				log_write "FTP pull from $FTP_IP failed; error $FTP_RETURN."
+				led_mode 0
+				return 1;
+			fi
+		else
+			log_write "Executing FTP push to $FTP_IP ..."
+			handle_ftp_push $FTP_IP
+			FTP_RETURN=$?
+			if [ "$FTP_RETURN" == "0" ]
+			then
+				log_write "FTP push to $FTP_IP succeeded."
+				do_cleanup
+				return 0;
+			else
+				log_write "FTP push to $FTP_IP failed; error $FTP_RETURN."
+				led_mode 0
+				return 1;
+			fi
+		fi
+	else
+		log_write "  Server $FTP_IP already visited since last cleanup. Skipping ..."
+	fi
+}
+
+mkdir -p "$STORE_DIR"
+touch "$TOUCH_FILE"
+
+log_write "Beginning ..."
+
+tail -f /var/log/dhcplog.log | while read line
+do
+	if echo "$line" | grep -q "renewed\|bound"
+	then
+		handle_newnet "$line" &
+	elif echo "$line" | grep -q "deconfigured"
+	then
+		kill $(jobs -p)
+		led_mode 0
+	fi
+done

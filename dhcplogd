@@ -1,0 +1,13 @@
+#!/bin/sh
+
+case "$1" in
+	deconfig)
+		echo "[ `date` ] DHCP deconfigured" >> /var/log/dhcplog.log
+	;;
+	renew)
+		echo "[ `date` ] DHCP renewed @ $(ip -o -4 addr show dev wlan-sta | cut -d ' ' -f 7 | cut -f 1 -d '/')" >> /var/log/dhcplog.log
+	;;
+	bound)
+		echo "[ `date` ] DHCP bound @ $(ip -o -4 addr show dev wlan-sta | cut -d ' ' -f 7 | cut -f 1 -d '/')" >> /var/log/dhcplog.log
+	;;
+esac

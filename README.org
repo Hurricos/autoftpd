@@ -24,7 +24,7 @@ cd autoftpd && ./install.sh
 3) Insert USB flash drive with compatable, mountable filesystem (EXT2/3/4, FAT, NTFS all work.)
 4) Ensure router can run reliably on power supply granted; 5V @ 0.5A seems OK.
 5) Configure /etc/autoftp/autoftp.defaults.conf.
-   1) In particular, ensure the FTP_HOST_NR is correct; this is the host number in the subnet at which the FTP server is to be located.
+   1) In particular, ensure the =FTP_HOST_NR= is correct; this is the host number in the subnet at which the FTP server is to be located.
    2) Also remember to create and set a file to store the files that get automatically pulled down. This is, by default, /mnt/sda1/files.
 6) If any of the FTP servers require authentication, modify /etc/autoftp/autoftp.defaults.conf to =ncftp[get|put] -f /login/file.cfg=; see https://www.ncftp.com/ncftp/doc/ncftpget.html.
 

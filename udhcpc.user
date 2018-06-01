@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Ensures logging proceeds properly
+. /etc/autoftp/dhcplogd
