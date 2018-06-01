@@ -9,14 +9,14 @@ opkg install ncftp
 mv udhcpc.user /etc/udhcpc.user \
 	&& echo "Moved udhcpc.user to /etc/udhcpc.user"
 
-mv dhcplogd /etc/autoftp/dhcplogd \
-	&& echo "Moved dhcplogd to /etc/autoftp/dhcplogd"
+mv autoftpd /etc/init.d/autoftpd \
+	&& echo "Moved autoftpd to /etc/init.d/autoftpd"
 
 mkdir /etc/autoftp/ \
 	&& echo "Created directory /etc/autoftp"
 
-mv autoftpd /etc/init.d/autoftpd \
-	&& echo "Moved autoftpd to /etc/init.d/autoftpd"
+mv dhcplogd /etc/autoftp/dhcplogd \
+	&& echo "Moved dhcplogd to /etc/autoftp/dhcplogd"
 
 mv autoftp /etc/autoftp/autoftp \
    	&& echo "Moved autoftp to /etc/autoftp/autoftp"
