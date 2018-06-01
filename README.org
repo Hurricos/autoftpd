@@ -1,14 +1,32 @@
+
 * autoftp - automated WLAN file aggregator using NcFTP
 Written by Martin Kennedy - Feb 2018 - revised May 2018
 
 Setup:
-1) Ensure router automatically connects to SSID of desired routers - passwords do not need to be the same, but it makes things easier to configure.
-2) Insert USB flash drive with compatable, mountable filesystem (EXT2/3/4, FAT, NTFS all work.)
-3) Ensure router can run reliably on power supply granted; 5V @ 0.5A seems OK.
-4) Configure /etc/autoftp/autoftp.defaults.conf.
+
+1) Shell into the router and run some commands.
+
+#+BEGIN_SRC sh
+opkg update
+opkg install git
+git clone https://github.com/hurricos/autoftpd autoftpd
+#+END_SRC
+
+/Note: Alternatively, if you don't want =git= on your system (as of June 2018, it's 700KB), you can move it manually to =~/autoftpd/=./
+
+Then, run
+
+#+BEGIN_SRC sh
+cd autoftpd && ./install.sh
+#+END_SRC
+
+2) Ensure router automatically connects to SSID of desired routers - passwords do not need to be the same, but it makes things easier to configure.
+3) Insert USB flash drive with compatable, mountable filesystem (EXT2/3/4, FAT, NTFS all work.)
+4) Ensure router can run reliably on power supply granted; 5V @ 0.5A seems OK.
+5) Configure /etc/autoftp/autoftp.defaults.conf.
    1) In particular, ensure the FTP_HOST_NR is correct; this is the host number in the subnet at which the FTP server is to be located.
    2) Also remember to create and set a file to store the files that get automatically pulled down. This is, by default, /mnt/sda1/files.
-5) If any of the FTP servers require authentication, modify /etc/autoftp/autoftp.defaults.conf to =ncftp[get|put] -f /login/file.cfg=; see https://www.ncftp.com/ncftp/doc/ncftpget.html.
+6) If any of the FTP servers require authentication, modify /etc/autoftp/autoftp.defaults.conf to =ncftp[get|put] -f /login/file.cfg=; see https://www.ncftp.com/ncftp/doc/ncftpget.html.
 
 Notes:
 1) There may be some issues with the pull mechanism; notably, if files change during the pull, NcFTP will behave in an undefined manner.
