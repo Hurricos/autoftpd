@@ -8,22 +8,19 @@ Setup:
    
    #+BEGIN_SRC sh
    opkg update
-   opkg install git
+   opkg install git-http
    git clone https://github.com/hurricos/autoftpd autoftpd
    #+END_SRC
-
-   /Note: Alternatively, if you don't want =git= on your system (as of June 2018, it's 700KB), you can move it manually to =~/autoftpd/=./
+   /Note: Alternatively, if you don't want/ =git-http= /on your system (as of June 2018, it's 870KB), you can move it manually to/ =~/autoftpd/=.
 
 2) Configure =autoftp.defaults.conf=. In particular:
    1) Ensure the =FTP_HOST_NR= is correct; this is the host number in the subnet at which the FTP server is to be located.
    2) Remember to create and set a file to store the files that get automatically pulled down. This is, by default, =/mnt/sda1/files=, so run =ls /mnt= to find the automatic mount point, then =mkdir /mnt/<MOUNT_POINT>/files/=, and change =FS_DIR= in =autoftp.defaults.conf= to =/mnt/<MOUNT_POINT>=.
    
 3) Install by running
-
    #+BEGIN_SRC sh
    cd autoftpd && ./install.sh
    #+END_SRC
-
 4) Insert USB flash drive with compatable, mountable filesystem (EXT2/3/4, FAT, NTFS all work.)
 
 5) By default, =autoftpd= expects that the sink (push) FTP server requires authentication, but not the source (pull) FTP server(s). This is reflected in =autoftp.defaults.conf=. Before attempting to use =autoftpd=, please create a file that looks like [[sample_login.cfg]], fill in the required credentials and place it either at the default location (=/etc/autoftp/login.cfg=), or wherever you like (making sure to set =PUSH_LOGIN_FILE= to match). If you want to add login requirements to the source FTP servers, set =PULL_REQ_AUTH= to =TRUE=, and provide a location for a login file.
