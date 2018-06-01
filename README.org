@@ -27,11 +27,11 @@ SCHEDULED: <2018-06-01 Fri 14:00>--<2018-06-01 Fri 17:00>
 
 - [X] Install vsFTPd on laptop
 
-- [ ] Setup laptop vsftpd to accept anonymous configuration
+- [X] Setup laptop vsftpd to accept anonymous configuration
 
 - [ ] Setup pi vsftpd to accept from configuration in [[file:autoftp/login.cfg][login.cfg]]
 
-- [ ] Test out both vsftpd's from command-line ncFTP
+- [X] Test out both vsftpd's from command-line NcFTP
 
 - [ ] Connect laptop to Linksys
 
@@ -39,7 +39,7 @@ SCHEDULED: <2018-06-01 Fri 14:00>--<2018-06-01 Fri 17:00>
 
 ** TODO Create installation script
 
-- [ ] Add default installs to scripts
+- [X] Add default installs to scripts
 
 - [ ] Add source files to script
 
